@@ -23,11 +23,76 @@ export default function Hero() {
     },
   ];
 
+  // ✨ MOTS-CLÉS QUI APPARAISSENT/DISPARAISSENT
+  const floatingWords = [
+    { text: "Acharné", position: { top: '15%', left: '8%' }, delay: 0 },
+    { text: "Déterminé", position: { top: '25%', right: '5%' }, delay: 1.5 },
+    { text: "Rigoureux", position: { top: '45%', left: '3%' }, delay: 3 },
+    { text: "Engagé", position: { bottom: '35%', right: '3%' }, delay: 4.5 },
+    { text: "Excellent", position: { top: '55%', right: '8%' }, delay: 6 },
+    { text: "Dévoué", position: { bottom: '25%', left: '5%' }, delay: 7.5 },
+    { text: "Confiance", position: { top: '60%', left: '12%' }, delay: 9 },
+    { text: "Passionné", position: { bottom: '15%', right: '10%' }, delay: 10.5 },
+    { text: "Créatif", position: { top: '20%', left: '45%' }, delay: 12 },
+    { text: "Innovant", position: { bottom: '40%', left: '40%' }, delay: 13.5 },
+  ];
+
   return (
     <section
       id="home"
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden px-4 sm:px-6 pt-20 pb-24 sm:pb-32 bg-black w-full"
     >
+      {/* ✨ MOTS-CLÉS FLOTTANTS - Apparaissent partout dans le hero */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
+        {floatingWords.map((word, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, scale: 0.5 }}
+            animate={{ 
+              opacity: [0, 1, 1, 0],
+              scale: [0.5, 1, 1, 0.8],
+              y: [10, 0, -5, -20],
+            }}
+            transition={{
+              duration: 4,
+              delay: word.delay,
+              repeat: Infinity,
+              repeatDelay: 12,
+              ease: "easeInOut",
+              times: [0, 0.2, 0.7, 1]
+            }}
+            style={{
+              position: 'absolute',
+              ...word.position,
+            }}
+            className="hidden md:block"
+          >
+            <div className="relative">
+              {/* Effet glow doré */}
+              <div 
+                className="absolute inset-0 blur-xl opacity-50"
+                style={{
+                  background: 'radial-gradient(circle, rgba(255,215,0,0.6) 0%, transparent 70%)',
+                }}
+              ></div>
+              
+              {/* Le mot */}
+              <span 
+                className="relative font-mono text-accent text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase"
+                style={{
+                  textShadow: '0 0 20px rgba(255, 215, 0, 0.8), 0 0 40px rgba(255, 215, 0, 0.4)',
+                }}
+              >
+                {word.text}
+              </span>
+
+              {/* Petit point décoratif */}
+              <span className="absolute -left-2 top-1/2 -translate-y-1/2 w-1 h-1 bg-accent rounded-full"></span>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
       {/* Grille subtile en fond */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
         <div
