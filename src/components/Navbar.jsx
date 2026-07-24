@@ -420,19 +420,34 @@ export default function Navbar() {
                   <p className="text-gray-500 text-xs mb-4 font-mono">
                     RETROUVE-MOI SUR
                   </p>
-                  <div className="flex gap-3">
-                    {[FaGithub, FaLinkedin, HiMail].map((Icon, i) => (
-                      <a
-                        key={i}
-                        href="#"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
-                      >
-                        <Icon size={18} />
-                      </a>
-                    ))}
-                  </div>
+                  {/* ✅ RÉSEAUX SOCIAUX AVEC VRAIS LIENS */}
+<div className="flex gap-3">
+  <a
+    href="https://github.com/Theo09-star"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="GitHub"
+    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+  >
+    <FaGithub size={18} />
+  </a>
+  <a
+    href="https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+    target="_blank"
+    rel="noopener noreferrer"
+                    aria-label="LinkedIn"
+                    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+                  >
+                    <FaLinkedin size={18} />
+                  </a>
+                  <a
+                    href="mailto:lokossatheodoros@gmail.com"
+                    aria-label="Email"
+                    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+                  >
+                    <HiMail size={18} />
+                  </a>
+                </div>
                   <p className="text-gray-600 text-xs mt-6 italic">
                     © 2025 LOKOSSA Theodoros
                   </p>

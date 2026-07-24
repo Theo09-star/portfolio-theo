@@ -13,7 +13,7 @@ import {
 } from "react-icons/hi";
 import { FaGithub, FaLinkedin, FaWhatsapp } from "react-icons/fa";
 
-// ⚠️ REMPLACE PAR TES VRAIES INFOS EMAILJS
+// ⚠️ CONFIGURATION EMAILJS
 const EMAILJS_SERVICE_ID = "service_no6ks2n";
 const EMAILJS_TEMPLATE_ID = "template_xv4c7je";
 const EMAILJS_PUBLIC_KEY = "Sxy2_rLZDU_mr2Hun";
@@ -186,14 +186,14 @@ export default function Contact() {
               { 
                 icon: HiPhone, 
                 label: "Téléphone", 
-                value: "+2290191952655",
+                value: "+229 01 91 95 26 55",
                 href: "tel:+2290191952655",
                 color: "text-blue-400"
               },
               { 
                 icon: FaWhatsapp, 
                 label: "WhatsApp", 
-                value: "+2290191952655",
+                value: "+229 01 91 95 26 55",
                 href: "https://wa.me/2290191952655",
                 color: "text-green-400"
               },
@@ -249,22 +249,38 @@ export default function Contact() {
               </motion.a>
             ))}
 
-            {/* Réseaux sociaux */}
+            {/* ✅ RÉSEAUX SOCIAUX AVEC VRAIS LIENS */}
             <div className="pt-6 border-t border-white/10">
               <p className="text-xs text-gray-500 font-mono uppercase mb-4">
                 Suivez-moi
               </p>
               <div className="flex gap-3">
                 {[
-                  { Icon: FaGithub, href: "#", color: "hover:text-white" },
-                  { Icon: FaLinkedin, href: "#", color: "hover:text-blue-400" },
-                  { Icon: FaWhatsapp, href: "https://wa.me/229XXXXXXXX", color: "hover:text-green-400" },
-                ].map(({ Icon, href, color }, i) => (
+                  { 
+                    Icon: FaGithub, 
+                    href: "https://github.com/Theo09-star", 
+                    color: "hover:text-white",
+                    label: "GitHub"
+                  },
+                  { 
+                    Icon: FaLinkedin, 
+                    href: "https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android", 
+                    color: "hover:text-blue-400",
+                    label: "LinkedIn"
+                  },
+                  { 
+                    Icon: FaWhatsapp, 
+                    href: "https://wa.me/2290191952655", 
+                    color: "hover:text-green-400",
+                    label: "WhatsApp"
+                  },
+                ].map(({ Icon, href, color, label }, i) => (
                   <motion.a
                     key={i}
                     href={href}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={label}
                     whileHover={{ scale: 1.1, y: -3 }}
                     className={`w-12 h-12 rounded-xl bg-white/[0.02] border border-white/10 flex items-center justify-center text-gray-400 ${color} hover:border-accent/50 transition-all`}
                   >
@@ -368,7 +384,7 @@ export default function Contact() {
                         name="from_phone"
                         value={formData.from_phone}
                         onChange={handleChange}
-                        placeholder="+229 01919526555"
+                        placeholder="+229 01 91 95 26 55"
                         className="w-full pl-12 pr-4 py-3 bg-black/40 border border-white/10 rounded-xl focus:border-accent outline-none text-white placeholder-gray-600 transition-all"
                       />
                     </div>

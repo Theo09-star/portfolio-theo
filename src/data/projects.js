@@ -5,6 +5,7 @@ import seguroImg from "../assets/seguro.png";
 import betsaleelDashboardImg from "../assets/Betsaleel Dashboard.png";
 import betsaleelproformaImg from "../assets/betsaleelproforma.png";
 import ministryImg from "../assets/ministry.png";
+import theoImg from "../assets/theo.png";
 
 
 
@@ -76,9 +77,9 @@ export const projects = [
     tech: ["React.js", "Tailwind CSS", "Framer Motion"],
     description:
       "Portfolio personnel moderne et interactif avec animations premium, effets glassmorphiques et design responsive. Développé avec React et Tailwind CSS, il met en valeur mes projets, compétences et parcours avec une expérience utilisateur unique et engageante.",
-    image: "",
-    link: "#",
-    github: "#",
+    image: theoImg,
+    link: "https://portfolio-theo-smoky.vercel.app",
+    github: "https://github.com/Theo09-star/portfolio-theo",
   },
 ];
 

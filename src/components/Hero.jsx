@@ -4,6 +4,25 @@ import { HiMail, HiArrowDown } from "react-icons/hi";
 import avatar from "../assets/theo.jpg";
 
 export default function Hero() {
+  // 🔗 TES VRAIS LIENS
+  const socialLinks = [
+    { 
+      Icon: FaGithub, 
+      href: "https://github.com/Theo09-star",
+      label: "GitHub"
+    },
+    { 
+      Icon: FaLinkedin, 
+      href: "https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      label: "LinkedIn"
+    },
+    { 
+      Icon: HiMail, 
+      href: "mailto:lokossatheodoros@gmail.com",
+      label: "Email"
+    },
+  ];
+
   return (
     <section
       id="home"
@@ -22,10 +41,9 @@ export default function Hero() {
       </div>
 
       <div className="max-w-7xl w-full mx-auto overflow-hidden">
-        {/* CONTENEUR PRINCIPAL */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           
-          {/* ========== COLONNE GAUCHE ========== */}
+          {/* COLONNE GAUCHE */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -46,169 +64,132 @@ export default function Hero() {
             </p>
           </motion.div>
 
-       {/* ========== COLONNE CENTRE (AVATAR + NOM) ========== */}
-<div className="lg:col-span-6 order-1 lg:order-2 relative flex flex-col items-center justify-center w-full">
-  {/* 💬 BULLE DE DIALOGUE - Version Framer Motion (fiable et douce) */}
-<motion.div 
-  initial={{ opacity: 0, scale: 0, rotate: -15 }}
-  animate={{ 
-    opacity: 1, 
-    scale: 1, 
-    rotate: -5,
-    y: [0, -8, 0]
-  }}
-  transition={{ 
-    opacity: { delay: 2, duration: 0.5 },
-    scale: { delay: 2, duration: 0.5, type: "spring", stiffness: 150 },
-    rotate: { delay: 2, duration: 0.5 },
-    y: { 
-      repeat: Infinity, 
-      duration: 3, 
-      ease: "easeInOut",
-      delay: 3
-    }
-  }}
-  className="absolute top-[35%] sm:top-[38%] md:top-[35%] lg:top-[32%] right-[5%] sm:right-[8%] md:right-[12%] lg:right-[15%] z-40 pointer-events-none hidden sm:block"
->
-  <div className="relative">
-    {/* Bulle principale */}
-    <div className="relative bg-accent text-black px-5 py-3 rounded-2xl shadow-2xl">
-      {/* Texte */}
-      <div className="flex items-center gap-2 text-sm md:text-base font-bold">
-        <span 
-          style={{ 
-            fontFamily: "'Dancing Script', cursive", 
-            fontSize: '1.8em', 
-            lineHeight: '1',
-            fontWeight: '600'
-          }}
-        >
-          heyyy
-        </span>
-        <motion.span
-          animate={{ rotate: [0, 20, -10, 20, 0] }}
-          transition={{ 
-            repeat: Infinity, 
-            duration: 2, 
-            ease: "easeInOut",
-            delay: 3
-          }}
-          style={{ 
-            display: 'inline-block', 
-            transformOrigin: 'bottom right',
-            fontSize: '1.3em'
-          }}
-        >
-          👋
-        </motion.span>
-      </div>
+          {/* COLONNE CENTRE (AVATAR + NOM) */}
+          <div className="lg:col-span-6 order-1 lg:order-2 relative flex flex-col items-center justify-center w-full">
+            
+            {/* 💬 BULLE DE DIALOGUE */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0, rotate: -15 }}
+              animate={{ 
+                opacity: 1, 
+                scale: 1, 
+                rotate: -5,
+                y: [0, -8, 0]
+              }}
+              transition={{ 
+                opacity: { delay: 2, duration: 0.5 },
+                scale: { delay: 2, duration: 0.5, type: "spring", stiffness: 150 },
+                rotate: { delay: 2, duration: 0.5 },
+                y: { 
+                  repeat: Infinity, 
+                  duration: 3, 
+                  ease: "easeInOut",
+                  delay: 3
+                }
+              }}
+              className="absolute top-[35%] sm:top-[38%] md:top-[35%] lg:top-[32%] right-[5%] sm:right-[8%] md:right-[12%] lg:right-[15%] z-40 pointer-events-none hidden sm:block"
+            >
+              <div className="relative">
+                <div className="relative bg-accent text-black px-5 py-3 rounded-2xl shadow-2xl">
+                  <div className="flex items-center gap-2 text-sm md:text-base font-bold">
+                    <span 
+                      style={{ 
+                        fontFamily: "'Dancing Script', cursive", 
+                        fontSize: '1.8em', 
+                        lineHeight: '1',
+                        fontWeight: '600'
+                      }}
+                    >
+                      heyyy
+                    </span>
+                    <motion.span
+                      animate={{ rotate: [0, 20, -10, 20, 0] }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2, 
+                        ease: "easeInOut",
+                        delay: 3
+                      }}
+                      style={{ 
+                        display: 'inline-block', 
+                        transformOrigin: 'bottom right',
+                        fontSize: '1.3em'
+                      }}
+                    >
+                      👋
+                    </motion.span>
+                  </div>
 
-      {/* Petits points animés avec Framer Motion */}
-      <div className="flex gap-1 justify-center mt-1.5">
-        {[0, 0.2, 0.4].map((delay, i) => (
-          <motion.span
-            key={i}
-            animate={{ opacity: [0.3, 1, 0.3] }}
-            transition={{
-              repeat: Infinity,
-              duration: 1.5,
-              delay: delay + 2.5,
-              ease: "easeInOut"
-            }}
-            className="w-1.5 h-1.5 bg-black rounded-full"
-          />
-        ))}
-      </div>
+                  <div className="flex gap-1 justify-center mt-1.5">
+                    {[0, 0.2, 0.4].map((delay, i) => (
+                      <motion.span
+                        key={i}
+                        animate={{ opacity: [0.3, 1, 0.3] }}
+                        transition={{
+                          repeat: Infinity,
+                          duration: 1.5,
+                          delay: delay + 2.5,
+                          ease: "easeInOut"
+                        }}
+                        className="w-1.5 h-1.5 bg-black rounded-full"
+                      />
+                    ))}
+                  </div>
 
-      {/* Queue de la bulle (pointe vers la bouche) */}
-      <div 
-        className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0"
-        style={{
-          borderLeft: '10px solid transparent',
-          borderRight: '10px solid transparent',
-          borderTop: '12px solid #FFD700',
-        }}
-      ></div>
+                  <div 
+                    className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-0 h-0"
+                    style={{
+                      borderLeft: '10px solid transparent',
+                      borderRight: '10px solid transparent',
+                      borderTop: '12px solid #FFD700',
+                    }}
+                  ></div>
 
-      {/* Effet brillance interne */}
-      <div 
-        className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none"
-      >
-        <div 
-          className="absolute top-0 left-0 w-full h-full opacity-40"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 50%)',
-          }}
-        ></div>
-      </div>
-    </div>
+                  <div className="absolute inset-0 rounded-2xl overflow-hidden pointer-events-none">
+                    <div 
+                      className="absolute top-0 left-0 w-full h-full opacity-40"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(255,255,255,0.6) 0%, transparent 50%)',
+                      }}
+                    ></div>
+                  </div>
+                </div>
 
-    {/* Effet glow doux autour de la bulle */}
-    <div className="absolute inset-0 bg-accent/50 blur-2xl -z-10 rounded-2xl scale-90"></div>
-  </div>
-</motion.div>
+                <div className="absolute inset-0 bg-accent/50 blur-2xl -z-10 rounded-2xl scale-90"></div>
+              </div>
+            </motion.div>
 
-  {/* Avatar - fusion avec fond noir */}
-  <motion.div
-    initial={{ opacity: 0, y: 40 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{
-      duration: 1.2,
-      type: "spring",
-      stiffness: 60,
-      delay: 0.2,
-    }}
-    className="relative z-20 w-full flex justify-center"
-  >
-    
+            {/* Avatar */}
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1.2,
+                type: "spring",
+                stiffness: 60,
+                delay: 0.2,
+              }}
+              className="relative z-20 w-full flex justify-center"
+            >
               <div className="relative w-[280px] sm:w-[380px] md:w-[480px] lg:w-[580px]">
                 <img
                   src={avatar}
                   alt="LOKOSSA Theodoros"
                   className="w-full h-auto object-contain"
                   style={{
-                    maskImage:
-                      "radial-gradient(ellipse at center, black 50%, transparent 95%)",
-                    WebkitMaskImage:
-                      "radial-gradient(ellipse at center, black 50%, transparent 95%)",
+                    maskImage: "radial-gradient(ellipse at center, black 50%, transparent 95%)",
+                    WebkitMaskImage: "radial-gradient(ellipse at center, black 50%, transparent 95%)",
                   }}
                 />
                 
-                {/* Dégradé BAS */}
-                <div 
-                  className="absolute bottom-0 left-0 right-0 h-1/3 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(to top, #000000 0%, #000000 30%, transparent 100%)"
-                  }}
-                ></div>
-
-                {/* Dégradé GAUCHE */}
-                <div 
-                  className="absolute top-0 bottom-0 left-0 w-1/4 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(to right, #000000 0%, #000000 20%, transparent 100%)"
-                  }}
-                ></div>
-
-                {/* Dégradé DROITE */}
-                <div 
-                  className="absolute top-0 bottom-0 right-0 w-1/4 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(to left, #000000 0%, #000000 20%, transparent 100%)"
-                  }}
-                ></div>
-
-                {/* Dégradé HAUT */}
-                <div 
-                  className="absolute top-0 left-0 right-0 h-1/5 pointer-events-none"
-                  style={{
-                    background: "linear-gradient(to bottom, #000000 0%, transparent 100%)"
-                  }}
-                ></div>
+                <div className="absolute bottom-0 left-0 right-0 h-1/3 pointer-events-none" style={{ background: "linear-gradient(to top, #000000 0%, #000000 30%, transparent 100%)" }}></div>
+                <div className="absolute top-0 bottom-0 left-0 w-1/4 pointer-events-none" style={{ background: "linear-gradient(to right, #000000 0%, #000000 20%, transparent 100%)" }}></div>
+                <div className="absolute top-0 bottom-0 right-0 w-1/4 pointer-events-none" style={{ background: "linear-gradient(to left, #000000 0%, #000000 20%, transparent 100%)" }}></div>
+                <div className="absolute top-0 left-0 right-0 h-1/5 pointer-events-none" style={{ background: "linear-gradient(to bottom, #000000 0%, transparent 100%)" }}></div>
               </div>
             </motion.div>
 
-            {/* ⭐ NOM SUPERPOSÉ */}
+            {/* NOM SUPERPOSÉ */}
             <div className="relative -mt-16 sm:-mt-24 md:-mt-32 lg:-mt-44 z-30 text-center w-full pointer-events-none px-2">
               <motion.p
                 initial={{ opacity: 0, y: 10 }}
@@ -237,7 +218,7 @@ export default function Hero() {
             </div>
           </div>
 
-          {/* ========== COLONNE DROITE ========== */}
+          {/* COLONNE DROITE */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
@@ -260,7 +241,7 @@ export default function Hero() {
           </motion.div>
         </div>
 
-        {/* ========== DÉFILEMENT TECHNOS ========== */}
+        {/* DÉFILEMENT TECHNOS */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -304,7 +285,7 @@ export default function Hero() {
           </div>
         </motion.div>
         
-        {/* ========== BOUTONS ========== */}
+        {/* BOUTONS */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -332,26 +313,29 @@ export default function Hero() {
           </a>
         </motion.div>
 
-        {/* Réseaux sociaux */}
+        {/* ✅ RÉSEAUX SOCIAUX AVEC VRAIS LIENS */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 2.7 }}
           className="mt-6 flex justify-center gap-3"
         >
-          {[FaGithub, FaLinkedin, HiMail].map((Icon, i) => (
+          {socialLinks.map((social, i) => (
             <a
               key={i}
-              href="#"
+              href={social.href}
+              target={social.href.startsWith('mailto:') ? '_self' : '_blank'}
+              rel="noopener noreferrer"
+              aria-label={social.label}
               className="p-2.5 sm:p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent transition"
             >
-              <Icon size={16} className="sm:w-[18px] sm:h-[18px]" />
+              <social.Icon size={16} className="sm:w-[18px] sm:h-[18px]" />
             </a>
           ))}
         </motion.div>
       </div>
 
-      {/* ✅ FLÈCHE - Position absolute, bien en bas de la section */}
+      {/* FLÈCHE */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1, y: [0, 10, 0] }}

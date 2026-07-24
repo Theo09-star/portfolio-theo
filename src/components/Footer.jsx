@@ -48,20 +48,38 @@ export default function Footer() {
     "Photographie",
   ];
 
+  // ✅ TES VRAIS LIENS SOCIAUX
   const socials = [
-    { Icon: FaGithub, href: "#", label: "GitHub", color: "hover:text-white" },
-    { Icon: FaLinkedin, href: "#", label: "LinkedIn", color: "hover:text-blue-400" },
-    { Icon: FaWhatsapp, href: "https://wa.me/229XXXXXXXX", label: "WhatsApp", color: "hover:text-green-400" },
-    { Icon: FaInstagram, href: "#", label: "Instagram", color: "hover:text-pink-400" },
-    { Icon: FaTwitter, href: "#", label: "Twitter", color: "hover:text-blue-400" },
+    { 
+      Icon: FaGithub, 
+      href: "https://github.com/Theo09-star", 
+      label: "GitHub", 
+      color: "hover:text-white" 
+    },
+    { 
+      Icon: FaLinkedin, 
+      href: "https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android", 
+      label: "LinkedIn", 
+      color: "hover:text-blue-400" 
+    },
+    { 
+      Icon: HiMail, 
+      href: "mailto:lokossatheodoros@gmail.com", 
+      label: "Email", 
+      color: "hover:text-accent" 
+    },
+    { 
+      Icon: FaWhatsapp, 
+      href: "https://wa.me/229XXXXXXXX", 
+      label: "WhatsApp", 
+      color: "hover:text-green-400" 
+    },
   ];
 
   return (
     <footer className="relative bg-black overflow-hidden">
-      {/* ✅ TRANSITION DOUCE depuis Contact - dégradé subtil au lieu d'une bordure dure */}
       <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black/50 to-transparent pointer-events-none"></div>
 
-      {/* Grille en fond */}
       <div className="absolute inset-0 opacity-[0.02] pointer-events-none">
         <div
           className="absolute inset-0"
@@ -73,10 +91,9 @@ export default function Footer() {
         ></div>
       </div>
 
-      {/* Halo doré subtil */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-3xl h-64 bg-accent/5 blur-[120px] pointer-events-none"></div>
 
-      {/* ✅ BOUTON RETOUR EN HAUT - Bien positionné dans le flux */}
+      {/* BOUTON RETOUR EN HAUT */}
       <div className="relative w-full flex justify-center py-8">
         <motion.button
           onClick={scrollToTop}
@@ -88,22 +105,18 @@ export default function Footer() {
           className="group relative"
           aria-label="Retour en haut"
         >
-          {/* Pulse ring */}
           <span className="absolute inset-0 rounded-full bg-accent/30 animate-ping"></span>
           
-          {/* Bouton */}
           <div className="relative w-14 h-14 bg-accent rounded-full flex items-center justify-center shadow-lg shadow-accent/30 border-4 border-black">
             <HiArrowUp className="text-black group-hover:-translate-y-1 transition-transform" size={22} />
           </div>
           
-          {/* Tooltip */}
           <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-mono text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
             Back to top
           </span>
         </motion.button>
       </div>
 
-      {/* Balise décorative géante */}
       <span 
         className="absolute top-20 left-4 text-[100px] sm:text-[150px] font-black text-white/[0.02] font-mono select-none pointer-events-none leading-none"
       >
@@ -112,7 +125,6 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
         
-        {/* ========== SECTION PRINCIPALE ========== */}
         <div className="pt-4 pb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           
           {/* COLONNE 1 : Brand */}
@@ -241,10 +253,10 @@ export default function Footer() {
               </li>
 
               <li>
-                <a href="tel:+229XXXXXXXX" className="flex items-start gap-2 group">
+                <a href="tel:+2290191952655" className="flex items-start gap-2 group">
                   <HiPhone className="text-accent flex-shrink-0 mt-0.5" size={16} />
                   <p className="text-gray-400 text-sm group-hover:text-accent transition-colors">
-                    +229 XX XX XX XX
+                    +229  0191952655
                   </p>
                 </a>
               </li>
@@ -273,12 +285,11 @@ export default function Footer() {
           </motion.div>
         </div>
 
-        {/* Séparateur doré subtil */}
         <div className="relative py-6">
           <div className="absolute inset-x-0 top-1/2 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
         </div>
 
-        {/* ========== BARRE RÉSEAUX SOCIAUX ========== */}
+        {/* ✅ RÉSEAUX SOCIAUX AVEC VRAIS LIENS */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -293,7 +304,7 @@ export default function Footer() {
               <motion.a
                 key={i}
                 href={href}
-                target="_blank"
+                target={href.startsWith('mailto:') ? '_self' : '_blank'}
                 rel="noopener noreferrer"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -316,20 +327,19 @@ export default function Footer() {
           </div>
         </motion.div>
 
-        {/* Séparateur */}
         <div className="relative py-2">
           <div className="absolute inset-x-0 top-1/2 h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
         </div>
 
-        {/* ========== COPYRIGHT ========== */}
         <div className="py-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
           <p className="text-gray-500 flex items-center gap-2 flex-wrap justify-center">
             © {currentYear} 
             <span className="text-accent font-semibold">LOKOSSA Theodoros</span>
             <span className="hidden sm:inline">•</span>
             <span className="flex items-center gap-1">
-              Fait avec React 
-            <HiCode className="text-accent" size={14} />              et theodev
+              Fait avec React
+              <HiCode className="text-accent" size={14} />
+              et 
               <HiCode className="text-accent" size={14} />
             </span>
           </p>
@@ -345,7 +355,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Signature dev */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
