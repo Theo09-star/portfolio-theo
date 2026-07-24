@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HiMenu, HiX, HiMail, HiDownload, HiCheck } from "react-icons/hi";
+import { HiMenu, HiX, HiMail, HiDownload, HiCheck, HiDocumentText, HiPhotograph } from "react-icons/hi";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -9,6 +9,8 @@ export default function Navbar() {
   const [activeSection, setActiveSection] = useState("home");
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadSuccess, setDownloadSuccess] = useState(false);
+  const [showFormatMenu, setShowFormatMenu] = useState(false);
+  const [showFormatMenuMobile, setShowFormatMenuMobile] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +39,17 @@ export default function Navbar() {
     }
   }, [open]);
 
+  // Ferme le menu au clic ailleurs
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (!e.target.closest('.cv-menu-container')) {
+        setShowFormatMenu(false);
+      }
+    };
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
+
   const links = [
     { name: "Home", href: "#home", id: "home" },
     { name: "About", href: "#about", id: "about" },
@@ -45,36 +58,57 @@ export default function Navbar() {
     { name: "Contact", href: "#contact", id: "contact" },
   ];
 
-  const CV_PATH = "/cv-lokossa-theodoros.pdf";
-  const CV_NAME = "CV-LOKOSSA-Theodoros.pdf";
+  // 📄 CONFIGURATION DES FICHIERS CV
+  const CV_FORMATS = [
+    {
+      format: "PDF",
+      path: "/cv-lokossa-theodoros.pdf",
+      name: "CV-LOKOSSA-Theodoros.pdf",
+      icon: HiDocumentText,
+      color: "text-red-400",
+      description: "Format standard"
+    },
+    {
+      format: "JPEG",
+      path: "/cv-lokossa-theodoros.jpg",
+      name: "CV-LOKOSSA-Theodoros.jpg",
+      icon: HiPhotograph,
+      color: "text-blue-400",
+      description: "Format image"
+    }
+  ];
 
   // ✨ FONCTION DE TÉLÉCHARGEMENT AVEC SPINNER
-  const handleDownloadCV = (e) => {
-    e.preventDefault();
+  const handleDownloadCV = (format) => {
+    // Ferme les menus
+    setShowFormatMenu(false);
+    setShowFormatMenuMobile(false);
     
     // Démarre le spinner
     setIsDownloading(true);
     setDownloadSuccess(false);
 
-    // Simule un délai de chargement (1.5s) puis télécharge
     setTimeout(() => {
-      // Créer un lien invisible et déclencher le téléchargement
       const link = document.createElement('a');
-      link.href = CV_PATH;
-      link.download = CV_NAME;
+      link.href = format.path;
+      link.download = format.name;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
 
-      // Arrête le spinner et affiche le succès
       setIsDownloading(false);
       setDownloadSuccess(true);
 
-      // Retire le message de succès après 2 secondes
       setTimeout(() => {
         setDownloadSuccess(false);
       }, 2000);
     }, 1500);
+  };
+
+  // Toggle du menu
+  const toggleFormatMenu = (e) => {
+    e.stopPropagation();
+    setShowFormatMenu(!showFormatMenu);
   };
 
   return (
@@ -129,81 +163,149 @@ export default function Navbar() {
           {/* ========== BOUTONS ACTIONS DESKTOP (CV + Hire me) ========== */}
           <div className="hidden md:flex items-center gap-3">
             
-            {/* 📄 BOUTON DOWNLOAD CV AVEC SPINNER */}
-            <motion.button
-              onClick={handleDownloadCV}
-              disabled={isDownloading}
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="relative flex items-center gap-2 px-5 py-2 bg-white/[0.03] border border-white/20 text-white text-sm font-bold rounded-full overflow-hidden group hover:border-accent transition-all disabled:opacity-70 disabled:cursor-not-allowed min-w-[110px] justify-center"
-            >
-              {/* Effet balayage doré */}
-              {!isDownloading && !downloadSuccess && (
-                <span 
-                  className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"
-                  style={{
-                    background: 'linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.3) 50%, transparent 100%)',
-                  }}
-                ></span>
-              )}
-              
-              {/* Contenu dynamique selon l'état */}
-              <AnimatePresence mode="wait">
-                {isDownloading ? (
-                  // ⏳ ÉTAT : Téléchargement en cours
-                  <motion.div
-                    key="loading"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    className="relative z-10 flex items-center gap-2"
-                  >
-                    {/* Spinner qui tourne */}
+            {/* 📄 BOUTON DOWNLOAD CV AVEC MENU DÉROULANT */}
+            <div className="relative cv-menu-container">
+              <motion.button
+                onClick={toggleFormatMenu}
+                disabled={isDownloading}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="relative flex items-center gap-2 px-5 py-2 bg-white/[0.03] border border-white/20 text-white text-sm font-bold rounded-full overflow-hidden group hover:border-accent transition-all disabled:opacity-70 disabled:cursor-not-allowed min-w-[110px] justify-center"
+              >
+                {/* Effet balayage doré */}
+                {!isDownloading && !downloadSuccess && (
+                  <span 
+                    className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 ease-out"
+                    style={{
+                      background: 'linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.3) 50%, transparent 100%)',
+                    }}
+                  ></span>
+                )}
+                
+                <AnimatePresence mode="wait">
+                  {isDownloading ? (
                     <motion.div
-                      animate={{ rotate: 360 }}
-                      transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                      className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full"
-                    />
-                    <span className="text-accent">Chargement...</span>
-                  </motion.div>
-                ) : downloadSuccess ? (
-                  // ✅ ÉTAT : Succès
-                  <motion.div
-                    key="success"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    className="relative z-10 flex items-center gap-2"
-                  >
-                    <motion.div
-                      initial={{ scale: 0, rotate: -180 }}
-                      animate={{ scale: 1, rotate: 0 }}
-                      transition={{ type: "spring", stiffness: 200 }}
+                      key="loading"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      className="relative z-10 flex items-center gap-2"
                     >
-                      <HiCheck className="text-green-400" size={18} />
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                        className="w-4 h-4 border-2 border-accent border-t-transparent rounded-full"
+                      />
+                      <span className="text-accent">Chargement...</span>
                     </motion.div>
-                    <span className="text-green-400">Téléchargé !</span>
-                  </motion.div>
-                ) : (
-                  // 📄 ÉTAT : Par défaut
+                  ) : downloadSuccess ? (
+                    <motion.div
+                      key="success"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      className="relative z-10 flex items-center gap-2"
+                    >
+                      <motion.div
+                        initial={{ scale: 0, rotate: -180 }}
+                        animate={{ scale: 1, rotate: 0 }}
+                        transition={{ type: "spring", stiffness: 200 }}
+                      >
+                        <HiCheck className="text-green-400" size={18} />
+                      </motion.div>
+                      <span className="text-green-400">Téléchargé !</span>
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="default"
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.5 }}
+                      className="relative z-10 flex items-center gap-2"
+                    >
+                      <span className="group-hover:text-accent transition-colors duration-300">
+                        CV
+                      </span>
+                      <motion.div
+                        animate={{ rotate: showFormatMenu ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <HiDownload 
+                          className="group-hover:text-accent transition-all duration-300" 
+                          size={16} 
+                        />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.button>
+
+              {/* 📥 MENU DÉROULANT DES FORMATS */}
+              <AnimatePresence>
+                {showFormatMenu && !isDownloading && !downloadSuccess && (
                   <motion.div
-                    key="default"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.5 }}
-                    className="relative z-10 flex items-center gap-2"
+                    initial={{ opacity: 0, y: -10, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -10, scale: 0.9 }}
+                    transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                    className="absolute top-full right-0 mt-3 w-72 bg-black/95 backdrop-blur-xl border border-accent/30 rounded-2xl shadow-2xl overflow-hidden z-50"
+                    style={{
+                      boxShadow: "0 20px 60px rgba(255, 215, 0, 0.15)"
+                    }}
                   >
-                    <span className="group-hover:text-accent transition-colors duration-300">
-                      CV
-                    </span>
-                    <HiDownload 
-                      className="group-hover:text-accent group-hover:translate-y-0.5 transition-all duration-300" 
-                      size={16} 
-                    />
+                    {/* En-tête du menu */}
+                    <div className="p-4 border-b border-white/10 bg-gradient-to-r from-accent/10 to-transparent">
+                      <p className="text-accent text-xs font-mono uppercase tracking-widest mb-1">
+                        {"< Télécharger CV />"}
+                      </p>
+                      <p className="text-white text-sm font-bold">
+                        Choisissez le format
+                      </p>
+                    </div>
+
+                    {/* Options de formats */}
+                    <div className="p-2">
+                      {CV_FORMATS.map((format, index) => (
+                        <motion.button
+                          key={format.format}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
+                          onClick={() => handleDownloadCV(format)}
+                          whileHover={{ x: 5 }}
+                          className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/[0.05] group transition-all"
+                        >
+                          {/* Icône */}
+                          <div className={`w-11 h-11 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center ${format.color} group-hover:border-accent/50 transition-all`}>
+                            <format.icon size={22} />
+                          </div>
+
+                          {/* Info */}
+                          <div className="flex-1 text-left">
+                            <p className="text-white font-bold text-sm group-hover:text-accent transition-colors">
+                              Format {format.format}
+                            </p>
+                            <p className="text-gray-500 text-xs">
+                              {format.description}
+                            </p>
+                          </div>
+
+                          {/* Flèche */}
+                          <HiDownload className="text-accent opacity-0 group-hover:opacity-100 transition-opacity" size={18} />
+                        </motion.button>
+                      ))}
+                    </div>
+
+                    {/* Footer */}
+                    <div className="px-4 py-2 border-t border-white/10 bg-white/[0.02]">
+                      <p className="text-gray-500 text-[10px] font-mono text-center">
+                        LOKOSSA Theodoros - Full Stack Developer
+                      </p>
+                    </div>
                   </motion.div>
                 )}
               </AnimatePresence>
-            </motion.button>
+            </div>
 
             {/* ✨ BOUTON HIRE ME AVEC BALAYAGE */}
             <motion.a
@@ -327,70 +429,112 @@ export default function Navbar() {
                   transition={{ delay: 0.7 }}
                   className="flex flex-col gap-3 mt-6 pb-6 border-b border-white/10"
                 >
-                  {/* 📄 Bouton Download CV Mobile AVEC SPINNER */}
-                  <button
-                    onClick={handleDownloadCV}
-                    disabled={isDownloading}
-                    className="relative flex items-center justify-center gap-2 py-3 px-4 bg-white/[0.03] border border-white/20 text-white font-bold rounded-xl overflow-hidden group hover:border-accent transition-all disabled:opacity-70 disabled:cursor-not-allowed min-h-[48px]"
-                  >
-                    {!isDownloading && !downloadSuccess && (
-                      <span 
-                        className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
-                        style={{
-                          background: 'linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent)',
-                        }}
-                      ></span>
-                    )}
-                    
-                    <AnimatePresence mode="wait">
-                      {isDownloading ? (
-                        <motion.div
-                          key="loading-mobile"
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.5 }}
-                          className="relative z-10 flex items-center gap-2"
-                        >
+                  {/* 📄 Bouton Download CV Mobile AVEC MENU */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setShowFormatMenuMobile(!showFormatMenuMobile)}
+                      disabled={isDownloading}
+                      className="w-full relative flex items-center justify-center gap-2 py-3 px-4 bg-white/[0.03] border border-white/20 text-white font-bold rounded-xl overflow-hidden group hover:border-accent transition-all disabled:opacity-70 disabled:cursor-not-allowed min-h-[48px]"
+                    >
+                      {!isDownloading && !downloadSuccess && (
+                        <span 
+                          className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"
+                          style={{
+                            background: 'linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.3), transparent)',
+                          }}
+                        ></span>
+                      )}
+                      
+                      <AnimatePresence mode="wait">
+                        {isDownloading ? (
                           <motion.div
-                            animate={{ rotate: 360 }}
-                            transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
-                            className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full"
-                          />
-                          <span className="text-accent">Chargement...</span>
-                        </motion.div>
-                      ) : downloadSuccess ? (
-                        <motion.div
-                          key="success-mobile"
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.5 }}
-                          className="relative z-10 flex items-center gap-2"
-                        >
-                          <motion.div
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            transition={{ type: "spring", stiffness: 200 }}
+                            key="loading-mobile"
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            className="relative z-10 flex items-center gap-2"
                           >
-                            <HiCheck className="text-green-400" size={20} />
+                            <motion.div
+                              animate={{ rotate: 360 }}
+                              transition={{ repeat: Infinity, duration: 0.8, ease: "linear" }}
+                              className="w-5 h-5 border-2 border-accent border-t-transparent rounded-full"
+                            />
+                            <span className="text-accent">Chargement...</span>
                           </motion.div>
-                          <span className="text-green-400">Téléchargé !</span>
-                        </motion.div>
-                      ) : (
+                        ) : downloadSuccess ? (
+                          <motion.div
+                            key="success-mobile"
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            className="relative z-10 flex items-center gap-2"
+                          >
+                            <motion.div
+                              initial={{ scale: 0, rotate: -180 }}
+                              animate={{ scale: 1, rotate: 0 }}
+                              transition={{ type: "spring", stiffness: 200 }}
+                            >
+                              <HiCheck className="text-green-400" size={20} />
+                            </motion.div>
+                            <span className="text-green-400">Téléchargé !</span>
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key="default-mobile"
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.5 }}
+                            className="relative z-10 flex items-center gap-2"
+                          >
+                            <HiDownload className="group-hover:text-accent transition-colors" size={18} />
+                            <span className="group-hover:text-accent transition-colors">
+                              Télécharger CV
+                            </span>
+                            <motion.div
+                              animate={{ rotate: showFormatMenuMobile ? 180 : 0 }}
+                              transition={{ duration: 0.3 }}
+                              className="text-accent"
+                            >
+                              ▼
+                            </motion.div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </button>
+
+                    {/* Menu formats mobile */}
+                    <AnimatePresence>
+                      {showFormatMenuMobile && !isDownloading && !downloadSuccess && (
                         <motion.div
-                          key="default-mobile"
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.5 }}
-                          className="relative z-10 flex items-center gap-2"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="mt-2 space-y-2 overflow-hidden"
                         >
-                          <HiDownload className="group-hover:text-accent transition-colors" size={18} />
-                          <span className="group-hover:text-accent transition-colors">
-                            Télécharger CV
-                          </span>
+                          {CV_FORMATS.map((format, index) => (
+                            <motion.button
+                              key={format.format}
+                              initial={{ opacity: 0, x: -20 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: index * 0.1 }}
+                              onClick={() => handleDownloadCV(format)}
+                              className="w-full flex items-center gap-3 p-3 rounded-xl bg-white/[0.02] border border-white/10 hover:border-accent/50 transition-all group"
+                            >
+                              <div className={`w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center ${format.color} group-hover:border-accent/50 transition-all`}>
+                                <format.icon size={20} />
+                              </div>
+                              <div className="flex-1 text-left">
+                                <p className="text-white font-bold text-sm">Format {format.format}</p>
+                                <p className="text-gray-500 text-xs">{format.description}</p>
+                              </div>
+                              <HiDownload className="text-accent" size={18} />
+                            </motion.button>
+                          ))}
                         </motion.div>
                       )}
                     </AnimatePresence>
-                  </button>
+                  </div>
 
                   {/* ✨ Bouton Hire Me Mobile */}
                   <a
@@ -420,34 +564,33 @@ export default function Navbar() {
                   <p className="text-gray-500 text-xs mb-4 font-mono">
                     RETROUVE-MOI SUR
                   </p>
-                  {/* ✅ RÉSEAUX SOCIAUX AVEC VRAIS LIENS */}
-<div className="flex gap-3">
-  <a
-    href="https://github.com/Theo09-star"
-    target="_blank"
-    rel="noopener noreferrer"
-    aria-label="GitHub"
-    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
-  >
-    <FaGithub size={18} />
-  </a>
-  <a
-    href="https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android"
-    target="_blank"
-    rel="noopener noreferrer"
-                    aria-label="LinkedIn"
-                    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
-                  >
-                    <FaLinkedin size={18} />
-                  </a>
-                  <a
-                    href="mailto:lokossatheodoros@gmail.com"
-                    aria-label="Email"
-                    className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
-                  >
-                    <HiMail size={18} />
-                  </a>
-                </div>
+                  <div className="flex gap-3">
+                    <a
+                      href="https://github.com/Theo09-star"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="GitHub"
+                      className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+                    >
+                      <FaGithub size={18} />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/in/theodoros-lokossa-853760316?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label="LinkedIn"
+                      className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+                    >
+                      <FaLinkedin size={18} />
+                    </a>
+                    <a
+                      href="mailto:lokossatheodoros@gmail.com"
+                      aria-label="Email"
+                      className="p-3 border border-white/20 rounded-full hover:border-accent hover:text-accent hover:bg-accent/10 transition"
+                    >
+                      <HiMail size={18} />
+                    </a>
+                  </div>
                   <p className="text-gray-600 text-xs mt-6 italic">
                     © 2025 LOKOSSA Theodoros
                   </p>
