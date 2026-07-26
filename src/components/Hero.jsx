@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { HiMail, HiArrowDown } from "react-icons/hi";
-import avatar from "../assets/theo.jpg";
+import avatar from "../assets/theo.png";
 
 export default function Hero() {
   // 🔗 TES VRAIS LIENS
